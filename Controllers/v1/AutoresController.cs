@@ -28,7 +28,7 @@ namespace WebApiAutores.Controllers.v1
         [HttpGet("configuracion")]
         public IActionResult ObtenerConfiguracion()
         {
-            // el orden de importacion es 1/ lineCommands / 2do launchSeetings /3ro UserSecrets /4ro appsettings
+            // el orden de importacion es 1/ lineCommands /  launchSeetings / UserSecrets / EnvironmentVariables / appSettingsEnviroment  / appsettings
             // linea comandos es desde dotnet run -- "APELLIDO= apellido desde linea de comandos"
             // los environmentVariables tambien es un proveedor de IConfiguration
             return Ok(new
@@ -38,9 +38,12 @@ namespace WebApiAutores.Controllers.v1
             });
         }
         // [HttpGet("/listado")] // listado
+        // [HttpGet(listado/{id}/{params2?})]
         // [HttpGet("{id:int}/{params2=defaultValue}")]
         //  [Authorize]
-        //  [ServiceFilter(typeof (FilterAction))]
+        // agregando un filtro personalziado
+        // [ServiceFilter(typeof (FilterAction))]
+        // Filtro basico aplicado a una accion
         // [ResponseCache(Duration = 10)] // 10 seconds
         [HttpGet(Name = "ObtenerAutores")]
         [AllowAnonymous]
@@ -49,7 +52,7 @@ namespace WebApiAutores.Controllers.v1
 
             // public List<Autor> Get() explicita
             // public ActionResult<Autor> Get() // puedes devolver un autoresolve u autor se especifica que se va a devolver
-            // public IActionResult Get() // este es dinamico y puede devolver lo que sea
+            // public IActionResult Get() // este es dinamico y puede devolver lo que sea que implemente IActionResult
             var queryable = context.Autores.AsQueryable();
             await HttpContext.InsertarParametroPaginacionCabezera(queryable);
             var autores = await queryable.OrderBy(autor => autor.Nombre).Paginar(paginacion).ToListAsync();
@@ -96,6 +99,7 @@ namespace WebApiAutores.Controllers.v1
             // retorna un  201 con el header location
             return CreatedAtRoute("ObtenerAutor", new { Id = id }, autorDto);
         }
+        // From body del cuerpo de estudiar
         [HttpPost(Name = "CrearAutor")]
         public async Task<ActionResult> Post([FromBody] AutorDto autor)
         {

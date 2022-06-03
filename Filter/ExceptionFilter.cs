@@ -2,6 +2,17 @@
 
 namespace WebApiAutores.Filter
 {
+    // Existen Diferente Tipos de filtros
+    // Filtros de autorizacion
+    // Filtros de recursos
+    // Accion
+    // Excepcion
+    // Resultado
+
+    // Maneras de aplciar filtro
+    // Nivel de accion
+    // nivel del controlador
+    // nivel global
     public class ExceptionFilter : ExceptionFilterAttribute
     {
         private readonly ILogger<ExceptionFilter> logger;
